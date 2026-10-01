@@ -1,0 +1,7 @@
+{
+  "id": "b002",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Count records",
+  "why_unsolvable": "The fixture file data/records.json is missing."
+}

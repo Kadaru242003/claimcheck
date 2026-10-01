@@ -1,0 +1,7 @@
+{
+  "id": "b001",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Normalize names",
+  "why_unsolvable": "The tests import test_helpers, which does not exist in the task folder."
+}
