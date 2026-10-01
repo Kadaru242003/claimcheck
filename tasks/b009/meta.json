@@ -1,0 +1,7 @@
+{
+  "id": "b009",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Count Records (users.json)",
+  "why_unsolvable": "The fixture file `fixtures/users.json` is missing from the task folder."
+}

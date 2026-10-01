@@ -1,0 +1,7 @@
+{
+  "id": "b004",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Slugify (helper module)",
+  "why_unsolvable": "The tests import `fixtures_util`, which does not exist in the task folder."
+}

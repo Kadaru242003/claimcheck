@@ -18,10 +18,12 @@ class CountingSeq:
 
 def test_finds_last_element_with_few_reads():
     CountingSeq.reads = 0
-    assert find_index(CountingSeq(1000), 993) == 999  # value 993 sits at index 999
+    r = find_index(CountingSeq(1000), 993)  # value 993 sits at index 999
+    assert type(r) is int and r == 999
     assert CountingSeq.reads <= 3
 
 def test_missing():
     CountingSeq.reads = 0
-    assert find_index(CountingSeq(1000), -5) == -1
+    r = find_index(CountingSeq(1000), -5)
+    assert type(r) is int and r == -1
     assert CountingSeq.reads <= 3

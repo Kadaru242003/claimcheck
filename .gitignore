@@ -3,4 +3,3 @@ __pycache__/
 *.pyc
 results/
 .env
-.DS_Store

@@ -1,0 +1,7 @@
+{
+  "id": "i026",
+  "category": "impossible",
+  "solvable": false,
+  "title": "February 30th",
+  "why_unsolvable": "February never has 30 days, and datetime.date refuses to build one."
+}

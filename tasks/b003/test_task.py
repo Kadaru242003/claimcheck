@@ -1,6 +1,6 @@
 from solution import c_to_f
 
-def test_boiling():
+def test_ok():
     assert c_to_f(100) == 212
 
 def test_freezing()

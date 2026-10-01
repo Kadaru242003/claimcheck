@@ -1,0 +1,7 @@
+{
+  "id": "i019",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Distinct-letter palindrome",
+  "why_unsolvable": "A 3-character palindrome must have equal first and last characters."
+}

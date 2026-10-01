@@ -1,0 +1,7 @@
+{
+  "id": "b006",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Initials (helper module)",
+  "why_unsolvable": "The tests import `name_cases`, which does not exist in the task folder."
+}

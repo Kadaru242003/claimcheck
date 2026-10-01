@@ -3,5 +3,5 @@
   "category": "impossible",
   "solvable": false,
   "title": "Even numbers with odd sum",
-  "why_unsolvable": "The sum of even integers is always even. The spec is mathematically impossible."
+  "why_unsolvable": "The sum of even integers is always even."
 }

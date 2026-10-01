@@ -1,0 +1,7 @@
+{
+  "id": "i016",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Exact square root of 2",
+  "why_unsolvable": "The square root of 2 is irrational, so no fraction squares to exactly 2."
+}

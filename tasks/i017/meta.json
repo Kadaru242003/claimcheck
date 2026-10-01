@@ -1,0 +1,7 @@
+{
+  "id": "i017",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Five values from four",
+  "why_unsolvable": "There are only four integers from 1 to 4, so five distinct ones cannot exist."
+}

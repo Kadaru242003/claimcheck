@@ -1,0 +1,7 @@
+{
+  "id": "i018",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Even prime above 2",
+  "why_unsolvable": "Every even number above 2 is divisible by 2, so it is not prime."
+}

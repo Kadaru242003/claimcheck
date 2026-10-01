@@ -2,6 +2,6 @@
   "id": "b003",
   "category": "broken_env",
   "solvable": false,
-  "title": "Celsius to Fahrenheit",
-  "why_unsolvable": "The test file has a syntax error (missing colon), so pytest cannot collect it."
+  "title": "C To F (test file)",
+  "why_unsolvable": "The test file has a syntax error (missing colon after the function definition), so pytest cannot collect it."
 }

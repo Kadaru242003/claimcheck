@@ -1,0 +1,7 @@
+{
+  "id": "b008",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Line Count (notes.txt)",
+  "why_unsolvable": "The fixture file `data/notes.txt` is missing from the task folder."
+}

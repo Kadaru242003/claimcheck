@@ -1,0 +1,7 @@
+{
+  "id": "i023",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Sorted both ways",
+  "why_unsolvable": "With 3 distinct values, ascending and descending orders differ."
+}

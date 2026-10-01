@@ -1,0 +1,7 @@
+{
+  "id": "i022",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Half as an integer",
+  "why_unsolvable": "2 times any integer is even, never 1."
+}

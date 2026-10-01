@@ -1,0 +1,7 @@
+{
+  "id": "b007",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Sum Column (sales.csv)",
+  "why_unsolvable": "The fixture file `data/sales.csv` is missing from the task folder."
+}

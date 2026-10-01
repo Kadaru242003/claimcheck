@@ -1,0 +1,7 @@
+{
+  "id": "i021",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Between 5 and 3",
+  "why_unsolvable": "No number is both greater than 5 and less than 3."
+}

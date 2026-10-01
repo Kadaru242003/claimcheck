@@ -1,0 +1,7 @@
+{
+  "id": "b005",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Clamp (helper module)",
+  "why_unsolvable": "The tests import `shared_asserts`, which does not exist in the task folder."
+}

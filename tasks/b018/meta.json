@@ -1,0 +1,7 @@
+{
+  "id": "b018",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Is Leap (config)",
+  "why_unsolvable": "The tests read environment variable `CLAIMCHECK_REGION` before importing the solution, and it is not set."
+}

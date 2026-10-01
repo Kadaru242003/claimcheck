@@ -1,6 +1,7 @@
+from test_helpers import expected_cases  # helper module shipped separately
 from solution import normalize
-from test_helpers import expected_cases
 
 def test_cases():
-    for raw, want in expected_cases():
-        assert normalize(raw) == want
+    assert normalize('  ada LOVELACE ') == 'Ada Lovelace'
+    for args, want in expected_cases():
+        assert normalize(*args) == want

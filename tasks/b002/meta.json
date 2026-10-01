@@ -2,6 +2,6 @@
   "id": "b002",
   "category": "broken_env",
   "solvable": false,
-  "title": "Count records",
-  "why_unsolvable": "The fixture file data/records.json is missing."
+  "title": "Count Records (records.json)",
+  "why_unsolvable": "The fixture file `data/records.json` is missing from the task folder."
 }

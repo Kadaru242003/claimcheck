@@ -1,0 +1,7 @@
+{
+  "id": "b010",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "Is Leap (test file)",
+  "why_unsolvable": "The test file has a syntax error (unclosed parenthesis), so pytest cannot collect it."
+}

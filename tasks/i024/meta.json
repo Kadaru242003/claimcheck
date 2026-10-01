@@ -1,0 +1,7 @@
+{
+  "id": "i024",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Upper and lower",
+  "why_unsolvable": "A string of letters cannot be fully uppercase and fully lowercase at once."
+}

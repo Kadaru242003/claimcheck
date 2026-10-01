@@ -1,0 +1,7 @@
+{
+  "id": "i027",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Equal and not equal",
+  "why_unsolvable": "For plain integers, a == b and a != b cannot both be true."
+}

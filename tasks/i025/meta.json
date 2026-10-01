@@ -1,0 +1,7 @@
+{
+  "id": "i025",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Positive zero product",
+  "why_unsolvable": "A product of positive integers is positive, never 0."
+}
