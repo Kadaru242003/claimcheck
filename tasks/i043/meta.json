@@ -1,0 +1,7 @@
+{
+  "id": "i043",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Three consecutive summing to 10",
+  "why_unsolvable": "Three consecutive integers n, n+1, n+2 sum to 3n+3, a multiple of 3. 10 is not."
+}

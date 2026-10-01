@@ -1,0 +1,7 @@
+{
+  "id": "b026",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "kebab (helper module)",
+  "why_unsolvable": "The tests import `case_fixtures`, which does not exist in the task folder."
+}

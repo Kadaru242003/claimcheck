@@ -1,0 +1,7 @@
+{
+  "id": "b032",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "count_upper (test file)",
+  "why_unsolvable": "The test file has a syntax error (unmatched parenthesis), so pytest cannot collect it."
+}

@@ -1,0 +1,7 @@
+{
+  "id": "b030",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "longest_line (poem.txt)",
+  "why_unsolvable": "The fixture file `data/poem.txt` is missing from the task folder."
+}

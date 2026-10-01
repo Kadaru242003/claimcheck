@@ -1,0 +1,7 @@
+{
+  "id": "b034",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "sum_evens (test file)",
+  "why_unsolvable": "The test file has a syntax error (broken function signature), so pytest cannot collect it."
+}

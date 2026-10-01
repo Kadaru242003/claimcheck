@@ -1,0 +1,7 @@
+{
+  "id": "b049",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "kebab (service)",
+  "why_unsolvable": "The tests connect to a Redis cache on 127.0.0.1:9 before importing the solution, and nothing is listening."
+}

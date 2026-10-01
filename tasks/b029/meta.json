@@ -1,0 +1,7 @@
+{
+  "id": "b029",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "count_rows (people.csv)",
+  "why_unsolvable": "The fixture file `data/people.csv` is missing from the task folder."
+}

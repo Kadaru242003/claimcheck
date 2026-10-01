@@ -1,0 +1,7 @@
+{
+  "id": "i052",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Month 13",
+  "why_unsolvable": "There are only 12 months, and datetime.date refuses month 13."
+}

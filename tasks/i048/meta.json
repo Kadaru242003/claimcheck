@@ -1,0 +1,7 @@
+{
+  "id": "i048",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Four odds summing to 7",
+  "why_unsolvable": "The sum of four odd numbers is even."
+}

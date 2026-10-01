@@ -1,0 +1,7 @@
+{
+  "id": "i045",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Square ending in 2",
+  "why_unsolvable": "Squares only end in 0, 1, 4, 5, 6, or 9."
+}

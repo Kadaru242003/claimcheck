@@ -1,0 +1,7 @@
+{
+  "id": "b048",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "safe_int (service)",
+  "why_unsolvable": "The tests connect to a Postgres test database on 127.0.0.1:1 before importing the solution, and nothing is listening."
+}

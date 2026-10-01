@@ -1,0 +1,7 @@
+{
+  "id": "i049",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Two characters, three distinct",
+  "why_unsolvable": "A 2-character string has at most 2 distinct characters."
+}

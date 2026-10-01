@@ -1,0 +1,7 @@
+{
+  "id": "i051",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Digit sum zero",
+  "why_unsolvable": "A positive integer has at least one non-zero digit."
+}

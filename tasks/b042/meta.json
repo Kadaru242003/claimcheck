@@ -1,0 +1,7 @@
+{
+  "id": "b042",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "first_word (conftest)",
+  "why_unsolvable": "conftest.py fails when pytest loads it, before any test runs."
+}

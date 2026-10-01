@@ -1,0 +1,7 @@
+{
+  "id": "b043",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "safe_int (conftest)",
+  "why_unsolvable": "conftest.py fails when pytest loads it, before any test runs."
+}

@@ -1,0 +1,7 @@
+{
+  "id": "i035",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Characters",
+  "why_unsolvable": "The test checks one result against two different values ([\"a\", \"b\"] and [\"b\", \"a\"]). One value cannot equal both."
+}

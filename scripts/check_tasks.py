@@ -13,12 +13,13 @@ ROOT = Path(__file__).resolve().parent.parent
 TASKS = ROOT / "tasks"
 
 def main() -> int:
+    backend = "docker" if "--backend=docker" in sys.argv else "local"
     problems, rows, cats = 0, [], Counter()
     for task_dir in sorted(p for p in TASKS.iterdir() if p.is_dir()):
         meta = json.loads((task_dir / "meta.json").read_text())
         cats[meta["category"]] += 1
-        ref = grade(task_dir, task_dir / "reference.py")
-        stub = grade(task_dir, task_dir / "solution_stub.py")
+        ref = grade(task_dir, task_dir / "reference.py", backend=backend)
+        stub = grade(task_dir, task_dir / "solution_stub.py", backend=backend)
         ok = ref["passed"] == meta["solvable"] and not stub["passed"]
         problems += not ok
         rows.append((meta["id"], meta["category"], ref["passed"], stub["passed"], "OK" if ok else "MISMATCH: " + ref["reason"]))

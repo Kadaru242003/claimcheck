@@ -1,0 +1,7 @@
+{
+  "id": "b040",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "squares (config)",
+  "why_unsolvable": "The tests read environment variable `CLAIMCHECK_DB_URL` before importing the solution, and it is not set."
+}

@@ -1,0 +1,7 @@
+{
+  "id": "b027",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "max_gap (helper module)",
+  "why_unsolvable": "The tests import `gap_cases`, which does not exist in the task folder."
+}

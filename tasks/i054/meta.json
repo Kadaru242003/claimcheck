@@ -1,0 +1,7 @@
+{
+  "id": "i054",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Half split",
+  "why_unsolvable": "a - b == 0 means a == b, so a + b == 2a is even, never 1."
+}

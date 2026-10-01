@@ -1,0 +1,7 @@
+{
+  "id": "b024",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "squares (helper module)",
+  "why_unsolvable": "The tests import `square_cases`, which does not exist in the task folder."
+}

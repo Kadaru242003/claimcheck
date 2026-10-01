@@ -1,0 +1,7 @@
+{
+  "id": "i041",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Strip spaces",
+  "why_unsolvable": "The test checks one result against two different values (\"a\" and \" a\"). One value cannot equal both."
+}

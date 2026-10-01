@@ -1,0 +1,7 @@
+{
+  "id": "b031",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "count_rows (inventory.csv)",
+  "why_unsolvable": "The fixture file `fixtures/inventory.csv` is missing from the task folder."
+}

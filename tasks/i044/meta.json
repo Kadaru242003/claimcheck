@@ -1,0 +1,7 @@
+{
+  "id": "i044",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Remainders",
+  "why_unsolvable": "A multiple of 6 is a multiple of 3, so its remainder mod 3 is 0."
+}

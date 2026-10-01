@@ -1,0 +1,7 @@
+{
+  "id": "i053",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Prime divisible by 6",
+  "why_unsolvable": "Anything divisible by 6 is divisible by 2 and 3, so it is not prime."
+}

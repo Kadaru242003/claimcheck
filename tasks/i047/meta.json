@@ -1,0 +1,7 @@
+{
+  "id": "i047",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Square of -1",
+  "why_unsolvable": "The square of any integer is non-negative."
+}

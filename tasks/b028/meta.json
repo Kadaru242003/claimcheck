@@ -1,0 +1,7 @@
+{
+  "id": "b028",
+  "category": "broken_env",
+  "solvable": false,
+  "title": "count_records (orders.json)",
+  "why_unsolvable": "The fixture file `data/orders.json` is missing from the task folder."
+}

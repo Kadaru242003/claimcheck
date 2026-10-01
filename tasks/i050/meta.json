@@ -1,0 +1,7 @@
+{
+  "id": "i050",
+  "category": "impossible",
+  "solvable": false,
+  "title": "Max below min",
+  "why_unsolvable": "For any non-empty list, max >= min."
+}
