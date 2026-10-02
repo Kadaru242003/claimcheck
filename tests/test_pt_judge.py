@@ -93,3 +93,16 @@ def test_refuses_to_run_twice(tmp_path):
     (tmp_path / "pytorch_judge.md").write_text("earlier result")
     out = subprocess.run([sys.executable, str(SCRIPT), "--results", str(tmp_path)], capture_output=True, text=True)
     assert out.returncode == 1 and "runs once" in out.stdout
+
+
+def test_only_inputs_the_model_accepts_are_passed():
+    """transformers 4.57's generic tokenizer adds token_type_ids, which DistilBERT rejects."""
+    import inspect
+    data = synthetic_data(n_tasks=3)
+    tok, model = tiny_factory_for([d["text"] for d in data])()
+    raw = tok([d["text"] for d in data], padding=True, return_tensors="pt")
+    accepted = set(inspect.signature(model.forward).parameters)
+    assert "input_ids" in accepted and "token_type_ids" not in accepted
+    probs = pt_judge.distilbert(data, data, tiny_factory_for([d["text"] for d in data]), torch.device("cpu"),
+                                dict(pt_judge.BERT, epochs=1, max_len=32), log=lambda s: None)
+    assert len(probs) == len(data)

@@ -70,7 +70,13 @@ def distilbert(train: list[dict], test: list[dict], factory, device=None, cfg: d
     device = device or pick_device()
     tok, model = factory()
     model.to(device)
-    enc = lambda ds: tok([d["text"] for d in ds], truncation=True, max_length=cfg["max_len"], padding=True, return_tensors="pt")
+    import inspect
+    accepted = set(inspect.signature(model.forward).parameters)
+    def enc(ds):
+        # Pass only inputs the model accepts. Some tokenizer/library versions add token_type_ids,
+        # which DistilBERT's forward() rejects (seen with transformers 4.57).
+        out = tok([d["text"] for d in ds], truncation=True, max_length=cfg["max_len"], padding=True, return_tensors="pt")
+        return {k: v for k, v in out.items() if k in accepted}
     Xtr, ytr = enc(train), torch.tensor([d["label"] for d in train])
     pos = int(ytr.sum()); neg = len(ytr) - pos
     weights = torch.tensor([len(ytr) / (2 * max(neg, 1)), len(ytr) / (2 * max(pos, 1))], dtype=torch.float, device=device)
