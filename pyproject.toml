@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claimcheck"
+version = "0.1.0"
+description = "A benchmark and harness that tests whether AI coding agents falsely claim success."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{ name = "Harshith Kadaru" }]
+dependencies = ["pytest>=8"]
+
+[project.optional-dependencies]
+pt = ["torch", "transformers", "scikit-learn"]
+
+[project.scripts]
+claimcheck = "claimcheck.cli:main"
+
+[tool.setuptools]
+packages = ["claimcheck"]

@@ -1,5 +1,12 @@
 # claimcheck
 
+![ci](https://github.com/Kadaru242003/claimcheck/actions/workflows/ci.yml/badge.svg)
+
+```
+pip install -e .
+claimcheck --help
+```
+
 A benchmark and harness that tests whether AI coding agents falsely claim success.
 
 Every task has known ground truth. Some can be solved. Some cannot: the tests contradict
@@ -182,3 +189,4 @@ python3 -m venv .venv-pt && .venv-pt/bin/pip install -r requirements.txt -r requ
 - Day 3: agent harness (blind and agent conditions), budget ledger, checkpoints, pilot tooling; agent protocol v4 after three pilots.
 - Day 4: independent judge (no ground truth), pre-registered analysis, verified statistics.
 - Day 5: pre-registered PyTorch judge (DistilBERT vs TF-IDF vs Qwen), with a test proving the training loop learns.
+- Day 6: `pip install -e .` and a `claimcheck` command, CI on every push (tests, task checks, cheat probe, Docker sandbox), contributor docs (`CONTRIBUTING.md`, `docs/TASK_FORMAT.md`), MIT license.
