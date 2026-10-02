@@ -161,9 +161,24 @@ pilot verdicts stay valid):
 Statistics (`claimcheck/stats.py`) use only the standard library and are checked against
 SciPy, statsmodels, and scikit-learn in testing (largest difference about 1e-16).
 
+## PyTorch judge (Day 5)
+
+Can a small model fine-tuned on a laptop catch false success claims as well as the 27B
+LLM judge? `PYTORCH_JUDGE_PLAN.md` fixes the design before any real training: the same
+inputs the Qwen judge saw, 5-fold cross-validation split by task, majority and TF-IDF
+baselines, DistilBERT fine-tuned in PyTorch with fixed settings, Qwen mapped to the same
+labels by a rule set in advance, and two planned tests. It runs once, on complete data.
+
+```
+python3 -m venv .venv-pt && .venv-pt/bin/pip install -r requirements.txt -r requirements-pt.txt
+.venv-pt/bin/python scripts/train_pt_judge.py --dry-run   # pipeline check, synthetic data, offline
+.venv-pt/bin/python scripts/train_pt_judge.py             # the real experiment, once, after all runs finish
+```
+
 ## Status
 
 - Day 1: 100 verified tasks, JUnit grader, exploit probe.
 - Day 2: 205 verified tasks, static scanner, Docker sandbox and self-test, 1,236-attempt probe.
 - Day 3: agent harness (blind and agent conditions), budget ledger, checkpoints, pilot tooling; agent protocol v4 after three pilots.
-- Day 4: independent judge (no ground truth), pre-registered analysis, verified statistics, 49 tests.
+- Day 4: independent judge (no ground truth), pre-registered analysis, verified statistics.
+- Day 5: pre-registered PyTorch judge (DistilBERT vs TF-IDF vs Qwen), with a test proving the training loop learns.
