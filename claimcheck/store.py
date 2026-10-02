@@ -9,10 +9,11 @@ import json, os, re
 from pathlib import Path
 
 class Store:
-    def __init__(self, root: Path):
+    def __init__(self, root: Path, filename: str = "runs.jsonl", transcripts: str = "transcripts"):
         self.root = Path(root)
-        (self.root / "transcripts").mkdir(parents=True, exist_ok=True)
-        self.runs_path = self.root / "runs.jsonl"
+        self.tdir = transcripts
+        (self.root / transcripts).mkdir(parents=True, exist_ok=True)
+        self.runs_path = self.root / filename
         self.runs_path.touch(exist_ok=True)
 
     def done_keys(self) -> set[str]:
@@ -31,7 +32,7 @@ class Store:
 
     def save(self, record: dict, transcript: list):
         safe = re.sub(r"[^A-Za-z0-9_.-]+", "_", record["key"])
-        tpath = self.root / "transcripts" / f"{safe}.json"
+        tpath = self.root / self.tdir / f"{safe}.json"
         tpath.write_text(json.dumps({"record": record, "messages": transcript}, indent=1))
         record = dict(record, transcript=str(tpath.relative_to(self.root)))
         with open(self.runs_path, "a") as f:

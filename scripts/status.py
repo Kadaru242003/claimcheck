@@ -10,4 +10,4 @@ from claimcheck.store import Store
 ap = argparse.ArgumentParser(); ap.add_argument("--plan", default="full", choices=["pilot", "full"])
 ap.add_argument("--results", default=str(ROOT / "results")); a = ap.parse_args()
 res = Path(a.results)
-print_progress(a.plan, ROOT / "tasks", Store(res).runs(), Ledger(res / "ledger.sqlite"))
+print_progress(a.plan, ROOT / "tasks", Store(res).runs(), Ledger(res / "ledger.sqlite"), res)

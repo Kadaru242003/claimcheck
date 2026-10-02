@@ -120,7 +120,7 @@ def main(results=ROOT / "results") -> int:
     print("\n(Small pilot: these numbers check that the pipeline works. They are not results.)")
 
     print("\n" + "=" * 70 + "\n5. UPDATED ESTIMATE FOR THE FULL EXPERIMENT\n" + "=" * 70)
-    print_progress("full", ROOT / "tasks", store.runs(), ledger)
+    print_progress("full", ROOT / "tasks", store.runs(), ledger, results)
 
     print("\n" + "=" * 70)
     if problems:

@@ -35,12 +35,15 @@ def progress(plan: str, tasks_dir: Path, runs: list[dict], ledger) -> list[dict]
         rows.append(row)
     return rows
 
-def judge_estimate(plan: str, tasks_dir: Path) -> dict:
+def judge_estimate(plan: str, tasks_dir: Path, judgments: list[dict] | None = None) -> dict:
     n = len(jobs(plan, tasks_dir))
-    need = n * ESTIMATED_TOKENS["judge"]
-    return {"model": JUDGE_MODEL, "transcripts": n, "tokens_needed": need, "days": need / DAILY_TOKENS}
+    done = len(judgments or [])
+    per = statistics.mean(j["tokens"] for j in judgments) if judgments else ESTIMATED_TOKENS["judge"]
+    need = max(0, n - done) * per
+    return {"model": JUDGE_MODEL, "transcripts": n, "done": done, "per": round(per), "measured": bool(judgments),
+            "tokens_needed": round(need), "days": need / DAILY_TOKENS}
 
-def print_progress(plan, tasks_dir, runs, ledger):
+def print_progress(plan, tasks_dir, runs, ledger, results=None):
     print(f"Plan: {plan}   (daily budget per model: {DAILY_TOKENS:,} tokens = 90% of {FREE_LIMITS['tpd']:,})\n")
     for r in progress(plan, tasks_dir, runs, ledger):
         b, a = r["blind"], r["agent"]
@@ -52,9 +55,15 @@ def print_progress(plan, tasks_dir, runs, ledger):
         print(f"  last 24h         {r['requests_24h']:,} requests, {r['tokens_24h']:,} tokens")
         print(f"  left today       {r['requests_left']:,} requests, {r['tokens_left']:,} tokens")
         print(f"  still needed     {r['tokens_needed']:,} tokens  ->  about {r['days_left']:.1f} day(s)\n")
-    j = judge_estimate(plan, tasks_dir)
-    print(f"{j['model']} (judge, Day 4; estimate only)")
-    print(f"  {j['transcripts']} transcripts x {ESTIMATED_TOKENS['judge']:,} tokens = {j['tokens_needed']:,}  ->  about {j['days']:.1f} day(s)")
+    from .store import Store
+    jstore_path = Path(results or Path(tasks_dir).parent / "results") / "judgments.jsonl"
+    judgments = Store(jstore_path.parent, filename="judgments.jsonl", transcripts="judge_transcripts").runs() if jstore_path.exists() else []
+    j = judge_estimate(plan, tasks_dir, judgments)
+    jl = ledger.summary(JUDGE_MODEL)
+    print(f"{j['model']} (judge)")
+    print(f"  judged {j['done']}/{j['transcripts']}   tokens per judgment {j['per']:,} ({'measured' if j['measured'] else 'estimate'})")
+    print(f"  left today       {jl['requests_left']:,} requests, {jl['tokens_left']:,} tokens")
+    print(f"  still needed     {j['tokens_needed']:,} tokens  ->  about {j['days']:.1f} day(s)")
 
 def outcome_table(runs: list[dict]) -> str:
     cats = ["true_success", "false_success", "true_failure", "false_failure", "unclear", "flagged"]

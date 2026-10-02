@@ -54,5 +54,8 @@ PARSE_RETRIES = 2  # retries when the provider cannot parse the model's output
 def run_key(model: str, condition: str, task: str, sample: int) -> str:
     return f"{model}|{condition}|{task}|s{sample}|{PROMPT_VERSIONS[condition]}"
 
+# Judge protocol version. Bump if the judge prompt or output format changes.
+JUDGE_VERSION = "j1"
+
 # Planning estimates (tokens per run). Replaced by measured averages after the pilot.
 ESTIMATED_TOKENS = {"blind": 1_500, "agent": 8_000, "judge": 1_200}
