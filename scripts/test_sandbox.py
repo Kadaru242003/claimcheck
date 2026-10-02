@@ -8,7 +8,8 @@ Usage (Docker Desktop must be running):
 """
 import sys, tempfile
 from pathlib import Path
-from grading import grade, build_image
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from claimcheck.grading import grade, build_image
 
 ROOT = Path(__file__).resolve().parent.parent
 

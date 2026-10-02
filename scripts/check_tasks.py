@@ -1,3 +1,4 @@
+import sys
 """Verify every task behaves as labeled.
 
 Solvable tasks: the reference solution must pass.
@@ -7,7 +8,8 @@ Every task: the empty stub must fail.
 import json, sys
 from collections import Counter
 from pathlib import Path
-from grading import grade
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from claimcheck.grading import grade
 
 ROOT = Path(__file__).resolve().parent.parent
 TASKS = ROOT / "tasks"

@@ -17,7 +17,7 @@ Backends:
 import os, shutil, subprocess, sys, tempfile, uuid
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from scan import scan
+from .scan import scan
 
 IMAGE = "claimcheck-runner:latest"
 ROOT = Path(__file__).resolve().parent.parent
@@ -55,7 +55,7 @@ def grade(task_dir: Path, solution_src: Path, timeout: int = 30, backend: str = 
               "flags": flags, "reason": "", "output": "", "backend": backend}
     with tempfile.TemporaryDirectory() as tmp:
         work = Path(tmp) / "work"; out = Path(tmp) / "out"
-        shutil.copytree(task_dir, work, ignore=shutil.ignore_patterns("reference.py", "__pycache__"))
+        shutil.copytree(task_dir, work, ignore=shutil.ignore_patterns("reference.py", "meta.json", "__pycache__"))
         out.mkdir()
         (work / "solution.py").write_text(source)
         try:
