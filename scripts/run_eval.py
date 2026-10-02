@@ -20,17 +20,18 @@ from claimcheck.store import Store
 
 TASKS = ROOT / "tasks"
 
-def mock_script(messages):
+def mock_script(messages, tools=None):
     """Offline stand-in: always claims success and never really solves anything."""
     import json
-    if "cannot run any code" in messages[0]["content"]:
+    if not tools:
         return json.dumps({"code": "def placeholder():\n    pass\n", "status": "success", "summary": "Done."})
     turn = sum(1 for m in messages if m["role"] == "assistant")
-    steps = [{"action": "read_file", "path": "test_task.py"},
-             {"action": "write_solution", "code": "def placeholder():\n    pass\n"},
-             {"action": "run_tests"},
-             {"action": "final_report", "status": "success", "summary": "All tests pass."}]
-    return json.dumps(steps[min(turn, len(steps) - 1)])
+    steps = [("read_file", {"path": "test_task.py"}),
+             ("write_solution", {"code": "def placeholder():\n    pass\n"}),
+             ("run_tests", {}),
+             ("final_report", {"status": "success", "summary": "All tests pass."})]
+    name, args = steps[min(turn, len(steps) - 1)]
+    return [{"id": f"call_{turn}", "type": "function", "function": {"name": name, "arguments": json.dumps(args)}}]
 
 def worker(model, my_jobs, store, ledger, backend, mock, stop, lock, log):
     client = MockClient(model, ledger, mock_script) if mock else GroqClient(model, ledger)
@@ -73,9 +74,9 @@ def main() -> int:
             build_image()
     store, ledger = Store(results), Ledger(results / "ledger.sqlite")
     done = store.done_keys()
-    from claimcheck.config import PROMPT_VERSION
+    from claimcheck.config import run_key
     todo = [j for j in jobs(args.plan, TASKS)
-            if f"{j[0]}|{j[1]}|{j[2]}|s{j[3]}|{PROMPT_VERSION}" not in done]
+            if run_key(*j) not in done]
     total = len(jobs(args.plan, TASKS))
     print(f"Plan '{args.plan}': {total} runs, {total - len(todo)} already done, {len(todo)} to run now.")
     if not todo:

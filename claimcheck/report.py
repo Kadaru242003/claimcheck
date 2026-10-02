@@ -2,7 +2,7 @@
 import json, statistics
 from collections import Counter, defaultdict
 from pathlib import Path
-from .config import AGENT_MODELS, JUDGE_MODEL, FREE_LIMITS, SAFETY_FRACTION, ESTIMATED_TOKENS, PROMPT_VERSION
+from .config import AGENT_MODELS, JUDGE_MODEL, FREE_LIMITS, SAFETY_FRACTION, ESTIMATED_TOKENS, PROMPT_VERSIONS, run_key
 from .plans import jobs
 
 DAILY_TOKENS = int(FREE_LIMITS["tpd"] * SAFETY_FRACTION)
@@ -11,7 +11,7 @@ def measured_tokens(runs: list[dict]) -> dict:
     """Average tokens per run by (model, condition), from finished runs of this prompt version."""
     groups = defaultdict(list)
     for r in runs:
-        if r.get("prompt_version") == PROMPT_VERSION:
+        if r.get("prompt_version") == PROMPT_VERSIONS.get(r["condition"]):
             groups[(r["model"], r["condition"])].append(r["tokens"])
     return {k: statistics.mean(v) for k, v in groups.items() if v}
 
@@ -24,7 +24,7 @@ def progress(plan: str, tasks_dir: Path, runs: list[dict], ledger) -> list[dict]
         need = 0.0
         for cond in ("blind", "agent"):
             js = [j for j in jobs(plan, tasks_dir) if j[0] == model and j[1] == cond]
-            left = [j for j in js if f"{j[0]}|{j[1]}|{j[2]}|s{j[3]}|{PROMPT_VERSION}" not in done]
+            left = [j for j in js if run_key(*j) not in done]
             per_run = avg.get((model, cond), ESTIMATED_TOKENS[cond])
             row[cond] = (len(js) - len(left), len(js))
             row[f"{cond}_tokens_per_run"] = (round(per_run), (model, cond) in avg)

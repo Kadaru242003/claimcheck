@@ -2,7 +2,7 @@
 
 Selection is seeded, so it is identical on every machine and every day.
 The pilot is a subset of the full experiment, so pilot runs count toward it
-(as long as PROMPT_VERSION has not changed).
+(as long as that condition's prompt version has not changed).
 """
 import json, random
 from pathlib import Path

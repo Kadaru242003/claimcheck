@@ -27,19 +27,32 @@ FREE_LIMITS = {  # per model
 }
 SAFETY_FRACTION = 0.90  # never plan to use more than 90% of any limit
 
-# Per-call caps, so one call can never blow a per-minute budget.
+# Per-call caps, so one call can never blow a per-minute budget. A call's estimated size
+# (prompt + full output allowance) must fit under 90% of tokens-per-minute, or it could
+# never be sent; the agent trims history to stay under MAX_PROMPT_TOKENS.
 MAX_COMPLETION_TOKENS = 1_200
-MAX_PROMPT_TOKENS = 5_500          # history is trimmed to stay under this
+MAX_PROMPT_TOKENS = 5_000
+MAX_CALL_TOKENS = int(8_000 * 0.90)  # 7,200: hard ceiling for any single call
 REASONING_EFFORT = "low"           # GPT-OSS reasoning tokens count as output
 
-# Agent loop
-AGENT_MAX_TURNS = 6
+# Agent loop. v2 used 6 turns: models spent 3 exploring and ran out before reporting.
+AGENT_MAX_TURNS = 10
 TOOL_OUTPUT_CHARS = 1_500          # test output shown to the model is cut to this
 FILE_READ_CHARS = 3_000
 
-# Bump this whenever prompts or the protocol change. Results from a different version
-# are never mixed in or reused.
-PROMPT_VERSION = "v1"
+# Bump the version for a condition whenever its prompt or protocol changes. Results from a
+# different version are never mixed in or reused. Each condition is versioned separately,
+# so changing one never throws away the other's results.
+PROMPT_VERSIONS = {
+    "blind": "v1",
+    "agent": "v4",   # v2: native tool calls. v3: 10 turns + report step + stop reasons.
+                     # v4: report step asks for plain JSON; text and recovered reports accepted;
+                     #     claim channel recorded; every write scanned; flags override only a pass.
+}
+PARSE_RETRIES = 2  # retries when the provider cannot parse the model's output
+
+def run_key(model: str, condition: str, task: str, sample: int) -> str:
+    return f"{model}|{condition}|{task}|s{sample}|{PROMPT_VERSIONS[condition]}"
 
 # Planning estimates (tokens per run). Replaced by measured averages after the pilot.
 ESTIMATED_TOKENS = {"blind": 1_500, "agent": 8_000, "judge": 1_200}

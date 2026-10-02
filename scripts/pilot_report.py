@@ -11,7 +11,7 @@ from collections import defaultdict
 from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-from claimcheck.config import ESTIMATED_TOKENS, FREE_LIMITS, PROMPT_VERSION
+from claimcheck.config import ESTIMATED_TOKENS, FREE_LIMITS, run_key
 from claimcheck.ledger import Ledger
 from claimcheck.plans import jobs
 from claimcheck.report import outcome_table, print_progress
@@ -19,7 +19,7 @@ from claimcheck.store import Store
 
 def main(results=ROOT / "results") -> int:
     store, ledger = Store(results), Ledger(results / "ledger.sqlite")
-    pilot_keys = {f"{m}|{c}|{t}|s{s}|{PROMPT_VERSION}" for m, c, t, s in jobs("pilot", ROOT / "tasks")}
+    pilot_keys = {run_key(*j) for j in jobs("pilot", ROOT / "tasks")}
     runs = [r for r in store.runs() if r["key"] in pilot_keys]
     calls = [c for c in ledger.calls() if c["run_key"] in pilot_keys]
     problems = []
@@ -85,15 +85,38 @@ def main(results=ROOT / "results") -> int:
     print(f"runs whose ledger tokens/calls don't match the saved record: {len(mism)}")
     if mism:
         print("  (a run that was cut off and redone also leaves ledger calls from the first attempt)")
-    print(f"ledger rows for pilot: {len(calls)} ({len(ok_calls)} ok, {len(calls) - len(ok_calls)} rate-limited/errors)")
+    from collections import Counter
+    by_status = Counter(c["status"] for c in calls)
+    print("ledger rows for pilot: " + ", ".join(f"{n} {st}" for st, n in sorted(by_status.items())))
     print("Resume check: run `python scripts/run_eval.py --plan pilot` again; it must say '0 to run now'.")
 
     print("\n" + "=" * 70 + "\n4. PILOT OUTCOMES\n" + "=" * 70)
     print(outcome_table(runs) if runs else "No runs yet.")
     print("\nPer run:")
     for r in sorted(runs, key=lambda r: (r["model"], r["condition"], r["task"])):
+        extra = ""
+        if r["condition"] == "agent":
+            how = r.get("claim_channel") or ("tool" if r.get("gave_final_report") else ("forced" if r.get("forced_report") else "none"))
+            extra = (f" report={how} empty={r.get('empty_replies', 0)} no_tool={r.get('no_tool_replies', 0)} "
+                     f"parse_fail={r.get('parse_failures', 0)} length_stops={r.get('length_stops', 0)} "
+                     f"gaming_attempts={r.get('gaming_attempt_count', 0)}")
         print(f"  {r['model']:<22} {r['condition']:<6} {r['task']} ({r['category']:<10}) claim={r['claim']:<8}"
-              f"passed={str(r['passed']):<6}{r['outcome']:<14}turns={r['turns']} read_tests={r['read_test_file']}")
+              f"passed={str(r['passed']):<6}{r['outcome']:<14}turns={r['turns']} read_tests={r['read_test_file']}{extra}")
+    agent_runs = [r for r in runs if r["condition"] == "agent"]
+    if agent_runs:
+        unclear = sum(r["claim"] == "unclear" for r in agent_runs)
+        forced = sum(bool(r.get("forced_report")) for r in agent_runs)
+        lengths = sum(r.get("length_stops", 0) for r in agent_runs)
+        chans = Counter(r.get("claim_channel", "?") for r in agent_runs)
+        gaming = sum(1 for r in agent_runs if r.get("gaming_attempt_count"))
+        print(f"\nAgent protocol health: {unclear}/{len(agent_runs)} without a claim, {forced} forced reports, "
+              f"{lengths} replies cut off at the output cap")
+        print("Claim channels: " + ", ".join(f"{k}={v}" for k, v in sorted(chans.items())))
+        print(f"Runs with a gaming attempt (any write flagged by the scanner): {gaming}")
+        if unclear > len(agent_runs) // 3:
+            problems.append(f"{unclear}/{len(agent_runs)} agent runs ended without a claim: protocol problem, not a result")
+        if lengths:
+            problems.append(f"{lengths} replies hit the {1200}-token output cap: consider raising it")
     print("\n(Small pilot: these numbers check that the pipeline works. They are not results.)")
 
     print("\n" + "=" * 70 + "\n5. UPDATED ESTIMATE FOR THE FULL EXPERIMENT\n" + "=" * 70)
