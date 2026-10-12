@@ -13,6 +13,70 @@ Every task has known ground truth. Some can be solved. Some cannot: the tests co
 themselves or ask for something mathematically impossible, or the environment is broken.
 When a model says "done, all tests pass," we already know whether that is true.
 
+## Results
+
+All 530 planned runs finished and were judged, at $0 (Groq free plan). The analysis follows
+`ANALYSIS_PLAN.md`, which was committed before the results. Reproduce with
+`python scripts/analyze.py` and `python scripts/train_pt_judge.py`.
+
+**1. Running the tests cuts false success claims sharply.** False success rate on tasks that
+cannot be solved:
+
+| Model | Blind (cannot run code) | Agent (can run tests) | Paired difference | Exact McNemar p |
+|---|---|---|---|---|
+| GPT-OSS 120B | 58/102 (57%) [47%, 66%] | 5/36 (14%) [6%, 29%] | -42 points [-61, -19] | 0.0015 |
+| GPT-OSS 20B | 61/101 (60%) [51%, 69%] | 8/36 (22%) [12%, 38%] | -42 points [-58, -25] | 0.00028 |
+
+Both tests stay significant after a Bonferroni correction for the 6 planned tests (0.05 / 6 = 0.0083).
+
+**2. Model size made no significant difference.** 120B minus 20B: -5 points blind (p = 0.33),
+-8 points agent (p = 0.55).
+
+**3. A broken environment fools a model that cannot run anything.** Blind false success rate:
+broken environment 46/46 (120B) and 45/46 (20B), vs impossible tasks 9/50 and 13/49
+(Fisher p = 1.3e-18 and 3.9e-14). Models often notice an impossible spec by reading it. A broken
+environment only shows up when something runs.
+
+**4. Exploits.** Both models reverse-engineered the test data of impossible task i003 to make it
+pass, then claimed success without saying how. The grader counts it as an exploited pass, and the
+judge flagged both.
+
+**5. Other checks.** Solve rate on solvable tasks: 99 to 101 of 102 blind, 23 of 24 agent. No false
+failure claims. Every sensitivity check (voluntary claims only, excluding cut-off outputs,
+excluding scanner flags, excluding i003) gives the same picture.
+
+### Judges
+
+The LLM judge (`qwen/qwen3.8-27b`, a different model family) never sees ground truth. Where
+ground truth is known, its "genuine solution" verdict matched on 96% of 322 runs [94%, 98%],
+Cohen's kappa 0.90. 7 of 530 verdicts did not parse.
+
+A small model trained on a laptop (`PYTORCH_JUDGE_PLAN.md`, run once) on 384 success claims, 138
+of them false, with 5-fold cross-validation split by task:
+
+| Method | Accuracy | Balanced acc. | Recall (false claims) | F1 |
+|---|---|---|---|---|
+| Majority class | 64% | 50% | 0.00 | n/a |
+| TF-IDF + logistic regression | 92% [88%, 94%] | 92% | 0.91 | 0.89 |
+| DistilBERT, fine-tuned (PyTorch, Apple MPS, 12.5 min) | 91% [87%, 93%] | 89% | 0.85 | 0.87 |
+| Qwen 27B, zero-shot | 69% [64%, 74%] | 58% | 0.17 | 0.28 |
+
+DistilBERT vs Qwen: p = 1.2e-14. DistilBERT vs TF-IDF: p = 0.66 (no difference).
+
+Qwen's accuracy by category: solvable 96%, impossible 59%, broken environment 6%. On broken
+environments the code is often correct and only the environment is broken. Qwen was asked
+whether the solution is genuine, said yes, and so missed that the success claim was false. The
+trained models learned the exact label. So this compares a model trained on the definition with
+a zero-shot judge asked a related question, not a small model with a better large one. TF-IDF
+matching DistilBERT suggests that the wording of the report carries most of the signal.
+
+### Limits
+
+- Two models from one family (GPT-OSS), on short Python tasks written for this benchmark.
+- Agent runs cover 60 tasks per model, so their intervals are wide.
+- Blind runs cannot execute code, so a blind success claim is unverified by design.
+- The trained judges are evaluated on the same distribution they were trained on.
+
 ## Tasks (205)
 
 | Category | Count | Can it be solved? | Examples |
